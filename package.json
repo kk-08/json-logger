@@ -1,0 +1,21 @@
+{
+  "name": "json-logger",
+  "version": "1.0.0",
+  "description": "An application logger implemented over log4js for usage in micro-services",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "logger",
+    "application",
+    "log4js"
+  ],
+  "author": "KunalKukreja",
+  "license": "MIT",
+  "dependencies": {
+    "ip": "^1.1.8",
+    "log4js": "^6.8.0",
+    "moment": "^2.29.4"
+  }
+}
