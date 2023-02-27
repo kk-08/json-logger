@@ -1,4 +1,4 @@
-namespace Config {
+namespace Logger {
     namespace Fields {
         type Base = 'timestamp' | 'data';
         type Extra = 'level' | 'file' | 'function' | 'lineNumber' | 'id' | 'serverIp' | 'context' | 'category';

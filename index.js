@@ -42,7 +42,7 @@ const FIELD_SHORT_NAMES = {
 }
 
 /**
- * @type {Set<Config.Fields.Extra>}
+ * @type {Set<Logger.Fields.Extra>}
  */
 const ALLOWED_FIELD_UPDATES = new Set([
     LOG_FIELDS.LEVEL.name, 
@@ -101,7 +101,7 @@ class Logger {
     }
 
     /**
-     * @param {Config.Options} [options={}] 
+     * @param {Logger.Options} [options={}] 
      */
     constructor(options = {}) {
         options = utils.sanitizeObject(options);
@@ -134,7 +134,7 @@ class Logger {
 
     /**
      * Resets log fields to default configuration in the passed `config`
-     * @param {object} config 
+     * @param {Internal.Config} config 
      */
     static #resetLogFieldsConfig(config) {
         for (const field of Object.values(LOG_FIELDS)) {
@@ -144,8 +144,8 @@ class Logger {
 
     /**
      * Updates the `config` passed with the given `options`, if any
-     * @param {object} config 
-     * @param {Config.Options} [options={}]
+     * @param {Internal.Config} config 
+     * @param {Logger.Options} [options={}]
      */
     static #updateConfig(config, options = {}) {
         for (const [key, value] of Object.entries(options)) {
@@ -179,8 +179,8 @@ class Logger {
 
     /**
      * Configures the log layout with the required `logFields` in the `config` to be used for the JSON log
-     * @param {object} config 
-     * @param {Config.Fields.Extra[]} logFields 
+     * @param {Internal.Config} config 
+     * @param {Logger.Fields.Extra[]} logFields 
      */
     static #updateLogFieldsConfig(config, logFields) {
         Logger.#resetLogFieldsConfig(config);
@@ -190,10 +190,9 @@ class Logger {
     }
 
     /**
-     * Updates the `config` passed with the given `options` for log rotation
-     * Adds
-     * @param {object} config 
-     * @param {Config.RotationOptions} [options={}] 
+     * Updates the `config` passed with the given `options` for log rotation basis the selected rotation type
+     * @param {Internal.Config} config 
+     * @param {Logger.RotationOptions} [options={}] 
      */
     static #updateRotationConfig(config, options = {}) {
         const type = Logger.#ROTATION_TYPES_MAP[options.type];
@@ -214,8 +213,8 @@ class Logger {
 
     /**
      * Updates the rotation `config` to allow `size-based` rotation basis the passed `options`
-     * @param {object} config 
-     * @param {Config.RotationOptions} options 
+     * @param {Internal.Config} config 
+     * @param {Logger.RotationOptions} options 
      */
     static #updateFileTypeConfig(config, options) {
         Logger.#resetRotationOptionsConfig(config, Logger.#APPENDER_TYPES.FILE);
@@ -238,8 +237,8 @@ class Logger {
 
     /**
      * Updates the rotation `config` to allow `time-based` rotation basis the passed `options`
-     * @param {object} config 
-     * @param {Config.RotationOptions} options 
+     * @param {Internal.Config} config 
+     * @param {Logger.RotationOptions} options 
      */
     static #updateDateFileTypeConfig(config, options) {
         Logger.#resetRotationOptionsConfig(config, Logger.#APPENDER_TYPES.DATE_FILE);
@@ -252,8 +251,8 @@ class Logger {
 
     /**
      * Updates the rotation `config` to allow `time-based` rotation basis the passed `options`
-     * @param {object} config 
-     * @param {Internal.Appenders.Type} selectedAppenderType 
+     * @param {Internal.Config} config 
+     * @param {Internal.AppenderType} selectedAppenderType 
      */
     static #resetRotationOptionsConfig(config, selectedAppenderType) {
         //Add defaults of the selected appender type
@@ -275,7 +274,7 @@ class Logger {
      * Initializes logger for the passed `category` (if not already configured) 
      * with the default config or overriden config (with `overrideOptions`)
      * @param {string} category 
-     * @param {Config.Options} [overrideOptions={}]
+     * @param {Logger.Options} [overrideOptions={}]
      */
     initLogger(category = DEFAULT_LOGGER_CATEGORY, overrideOptions = {}) {
         if (this.#config.loggers[category]) throw new Error(`Logger already initialized for the category: ${category}`);
@@ -290,7 +289,7 @@ class Logger {
      * Updates the default config for the passed `category` if `overrideOptions` are passed.
      * Uses default config if no `overrideOptions` are passed
      * @param {string} category 
-     * @param {Config.Options} [overrideOptions={}]
+     * @param {Logger.Options} [overrideOptions={}]
      */
     #updateCustomConfig(category, overrideOptions) {
         if (!utils.isNonEmptyObject(overrideOptions)) {
